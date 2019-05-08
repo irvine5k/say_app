@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "626314164360",
+    "firebase_url": "https://sayapp-628f8.firebaseio.com",
+    "project_id": "sayapp-628f8",
+    "storage_bucket": "sayapp-628f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626314164360:android:cec2c892ad0e7203",
+        "android_client_info": {
+          "package_name": "com.example.say_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "626314164360-01c7i0h43qk8uiinp9tk1pa4dao8e6sp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQjDJGTMpTPzhIH0PynvWwoaF9bTNkTsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "626314164360-01c7i0h43qk8uiinp9tk1pa4dao8e6sp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
