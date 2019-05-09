@@ -23,51 +23,53 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Hero(
-              tag: 'logo',
-              child: Container(
-                child: LogoWidget(),
+      body: _auth.isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Hero(
+                    tag: 'logo',
+                    child: Container(
+                      child: LogoWidget(),
+                    ),
+                  ),
+                  SizedBox(height: 48.0),
+                  CustomTextField(
+                    handleChange: (String value) {
+                      email = value;
+                    },
+                    hintText: 'EMAIL',
+                  ),
+                  SizedBox(height: 8.0),
+                  CustomTextField(
+                    handleChange: (String value) {
+                      password = value;
+                    },
+                    hintText: 'PASSWORD',
+                    textInputType: TextInputType.number,
+                  ),
+                  SizedBox(height: 24.0),
+                  CircularButton(
+                    onPressed: () {
+                      _auth.signInUser(email, password, context);
+                    },
+                    label: 'LOGIN',
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 8.0),
+                  CircularButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, RegistrationScreen.id);
+                    },
+                    label: 'CREATE ACCOUNT',
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 48.0),
-            CustomTextField(
-              handleChange: (String value) {
-                email = value;
-              },
-              hintText: 'EMAIL',
-            ),
-            SizedBox(height: 8.0),
-            CustomTextField(
-              handleChange: (String value) {
-                password = value;
-              },
-              hintText: 'PASSWORD',
-              textInputType: TextInputType.number,
-            ),
-            SizedBox(height: 24.0),
-            CircularButton(
-              onPressed: () {
-                _auth.signInUser(email, password, context);
-              },
-              label: 'LOGIN',
-              color: Colors.blue,
-            ),
-            SizedBox(height: 8.0),
-            CircularButton(
-              onPressed: () {
-                Navigator.pushNamed(context, RegistrationScreen.id);
-              },
-              label: 'CREATE ACCOUNT',
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

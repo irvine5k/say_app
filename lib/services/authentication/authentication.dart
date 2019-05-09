@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/services.dart';
@@ -9,23 +10,46 @@ import 'package:flutter/material.dart';
 class Authentication {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final Firestore _firestore = Firestore.instance;
+
   FirebaseUser loggedInUser;
+
+  bool isLoading = false;
 
   Future<void> createUser(
     String email,
     String password,
     BuildContext context,
   ) async {
+    isLoading = true;
+
     try {
       final newUser = _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      if (newUser != null) {
-        Navigator.pushNamed(context, ChatScreen.id);
-      }
+
+      if (newUser != null) Navigator.pushNamed(context, ChatScreen.id);
+
+      isLoading = false;
     } catch (e) {
       throw Exception(e.message);
     }
   }
+
+  Future<void> sendMessage(String message) async {
+    try {
+      getCurrentUser();
+      _firestore
+          .collection('messages')
+          .document()
+          .setData({'text': message, 'sender': loggedInUser.email});
+    } catch (e) {}
+  }
+
+  // void messagesStream() async {
+  //   await for(var snapshot in _firestore.collection('messages').snapshots()){
+  //     snapshot.documents
+  //   }
+  // }
 
   Future<void> signInUser(
     String email,
@@ -35,9 +59,8 @@ class Authentication {
     try {
       final newUser = _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      if (newUser != null) {
-        Navigator.pushNamed(context, ChatScreen.id);
-      }
+
+      if (newUser != null) Navigator.pushNamed(context, ChatScreen.id);
     } catch (e) {
       throw Exception(e.message);
     }
@@ -46,12 +69,10 @@ class Authentication {
   void getCurrentUser() async {
     try {
       final user = await _firebaseAuth.currentUser();
-      if (user != null) {
-        loggedInUser = user;
-        print(loggedInUser.email);
-      }
+
+      if (user != null) loggedInUser = user;
     } catch (e) {
-      print(e);
+      throw Exception(e.message);
     }
   }
 
@@ -69,12 +90,8 @@ class Authentication {
 
       return user;
     } on PlatformException catch (e) {
-      print("Plataform excepction");
-
       throw e;
     } catch (e) {
-      print("Excepction");
-
       throw Exception(e.message);
     }
   }

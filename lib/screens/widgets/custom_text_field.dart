@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      obscureText: textInputType == TextInputType.number ? true : false,
       onChanged: handleChange,
       keyboardType: textInputType == null ? TextInputType.emailAddress : textInputType,
       style: TextStyle(color: Colors.black87),
