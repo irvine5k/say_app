@@ -44,7 +44,8 @@ class _LogoWidgetState extends State<LogoWidget>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Material(
+      color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
