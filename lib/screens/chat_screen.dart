@@ -22,7 +22,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        centerTitle: true,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
@@ -44,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text(
           'Chat',
           style: TextStyle(
-              color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 28),
+              color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 22),
         ),
         backgroundColor: Colors.white,
       ),
@@ -61,16 +60,19 @@ class _ChatScreenState extends State<ChatScreen> {
                   return Center(child: CircularProgressIndicator());
                 }
 
-                final messages = snapshot.data.documents;
+                final messages = snapshot.data.documents.reversed;
                 List<MessageBubble> messagesWidgets = [];
 
                 for (var message in messages) {
                   final messageText = message.data['text'];
                   final messageSender = message.data['sender'];
+                  _auth.getCurrentUser();
+                  bool isCurrentUser = _auth.loggedInUser.email == message.data['sender'];
 
                   final messageWidget = MessageBubble(
                     sender: messageSender,
                     text: messageText,
+                    isCurrentUser: isCurrentUser,
                   );
 
                   messagesWidgets.add(messageWidget);
@@ -78,6 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                 return Expanded(
                   child: ListView(
+                    reverse: true,
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     children: messagesWidgets,
                   ),
@@ -102,7 +105,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   FlatButton(
                     onPressed: () {
                       messageTextController.clear();
-                      
+
                       _auth.sendMessage(message);
                     },
                     child: Text(
